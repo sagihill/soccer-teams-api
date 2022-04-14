@@ -21,7 +21,7 @@ const getBookmarkedTeams = (db) => (req, res, next) => {
       if (teams.length) {
         res.json(teams);
       } else {
-        res.status(200);
+        res.status(200).json([]);
       }
     })
     .catch((err) => {
