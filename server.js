@@ -50,7 +50,8 @@ app.get("*", function (req, res) {
   res.status(404).json("Sorry, this path is not available");
 });
 
-const backendPort = config.get("BACKEND_API_PORT");
+const backendPort =
+  env == "PROD" ? config.get("PORT") : config.get("DEV_API_PORT");
 
 app.listen(backendPort, () => {
   console.log(`app is running on port ${backendPort}`);
