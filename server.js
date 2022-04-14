@@ -13,15 +13,8 @@ const seed = require("./seed/seed");
 // Config database
 
 const db = knex({
-  // connect to your own database here:
   client: "pg",
-  connection: {
-    host: "127.0.0.1",
-    port: 5433,
-    user: "postgres",
-    password: "sagi1991",
-    database: "postgres",
-  },
+  connection: process.env.DATABASE_URL,
 });
 
 const app = express();
