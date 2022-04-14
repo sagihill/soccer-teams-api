@@ -12,12 +12,15 @@ const seed = require("./seed/seed");
 
 // Config database
 const env = config.get("ENV");
-const connection =
+const connectionString =
   env == "PROD" ? config.get("DATABASE_URL") : config.get("DEV_DATABASE_URL");
 
 const db = knex({
   client: "pg",
-  connection,
+  connection: {
+    connectionString,
+    ssl: false,
+  },
 });
 
 const app = express();
