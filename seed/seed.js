@@ -1,4 +1,6 @@
 const axios = require("axios");
+const { Config } = require("../utils");
+const config = Config.getService();
 
 const deploySchema = (db) => {
   db.schema.hasTable("teams").then((exists) => {
@@ -24,9 +26,7 @@ const seedTeams = (db) => {
     .then((teams) => {
       if (!teams.length) {
         axios
-          .get(
-            "https://soccer.sportmonks.com/api/v2.0/countries/1161/teams?api_token=U2R5izj1YD4vHJNP7L9w3h86V76bKFsiciVAeKx7PiI9nrx9CePgKyjTOFfx"
-          )
+          .get(config.get("SPORTMONKS_API_URL"))
           .then((response) => {
             return formatAPIResponse(response.data.data);
           })

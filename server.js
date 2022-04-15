@@ -2,7 +2,7 @@ const express = require("express");
 
 // loading .env
 const { Config } = require("./utils");
-const config = new Config();
+const config = Config.getService();
 
 const morgan = require("morgan");
 const cors = require("cors");
