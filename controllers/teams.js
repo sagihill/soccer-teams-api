@@ -66,11 +66,12 @@ const isBookmark = (db) => (req, res, next) => {
 
 const updateBookmark = (db) => (req, res, next) => {
   const { id } = req.params;
-  const { bookmark } = req.body;
   db.select("*")
     .from("teams")
     .where({ id })
-    .update("bookmark", bookmark)
+    .update({
+      bookmark: db.raw("NOT ??", ["bookmark"]),
+    })
     .returning("*")
     .then((team) => {
       if (team.length) {
