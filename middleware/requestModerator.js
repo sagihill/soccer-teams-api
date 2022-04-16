@@ -1,6 +1,6 @@
-import { RequestModerator } from "../utils/requestModerator";
+const { RequestModerator } = require("../utils/requestModerator");
 
-export const requestsModeratorMiddlware = function (req, res, next) {
+const requestsModeratorMiddlware = function (req, res, next) {
   const moderator = RequestModerator.getService();
   const isTooMany = moderator.request();
   if (isTooMany) {
@@ -8,4 +8,8 @@ export const requestsModeratorMiddlware = function (req, res, next) {
   } else {
     next();
   }
+};
+
+module.exports = {
+  requestsModeratorMiddlware,
 };
