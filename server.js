@@ -1,7 +1,7 @@
 const express = require("express");
 
 // loading .env
-const { Config } = require("./utils");
+const { Config } = require("./utils/config");
 const config = Config.getService();
 
 const morgan = require("morgan");
@@ -9,6 +9,8 @@ const cors = require("cors");
 const knex = require("knex");
 const teams = require("./controllers/teams");
 const seed = require("./seed/seed");
+const { RequestModerator } = require("./utils/requestModerator");
+const { requestsModeratorMiddlware } = require("./middleware/requestModerator");
 
 // Config database
 const env = config.get("ENV");
@@ -28,6 +30,7 @@ const app = express();
 // Applying middleware
 app.use(morgan("combined"));
 app.use(cors());
+app.use(requestsModeratorMiddlware);
 app.use(express.json());
 
 //Seeding db with external API

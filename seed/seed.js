@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Config } = require("../utils");
+const { Config } = require("../utils/config");
 const config = Config.getService();
 
 const deploySchema = (db) => {
