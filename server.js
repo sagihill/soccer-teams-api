@@ -17,13 +17,17 @@ const env = config.get("ENV");
 const connectionString =
   env == "PROD" ? config.get("DATABASE_URL") : config.get("DEV_DATABASE_URL");
 
-const db = knex({
+const dbConfig = {
   client: "pg",
   connection: {
     connectionString,
-    // ssl: { rejectUnauthorized: false },
   },
-});
+};
+
+if (env === "PROD") {
+  dbConfig.connection.ssl = { rejectUnauthorized: false };
+}
+const db = knex(dbConfig);
 
 const app = express();
 
