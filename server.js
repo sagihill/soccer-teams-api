@@ -21,7 +21,7 @@ const db = knex({
   client: "pg",
   connection: {
     connectionString,
-    ssl: { rejectUnauthorized: false },
+    // ssl: { rejectUnauthorized: false },
   },
 });
 
@@ -30,7 +30,7 @@ const app = express();
 // Applying middleware
 app.use(morgan("combined"));
 app.use(cors());
-app.use(requestsModeratorMiddlware);
+// app.use(requestsModeratorMiddlware);
 app.use(express.json());
 
 //Seeding db with external API
@@ -59,5 +59,10 @@ const backendPort =
 app.listen(backendPort, () => {
   console.log(`app is running on port ${backendPort}`);
 });
+
+const interval = setInterval(() => {
+  const moderator = RequestModerator.getService();
+  moderator.moderate();
+}, 1000);
 
 // server.js

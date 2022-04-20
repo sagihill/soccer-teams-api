@@ -3,7 +3,7 @@ class RequestModerator {
   requests = [];
   initialMachineTime = null;
   constructor() {
-    this.initialMachineTime = Date.now;
+    this.initialMachineTime = Date.now();
   }
 
   static getService() {
@@ -14,20 +14,30 @@ class RequestModerator {
   }
 
   request() {
-    this.requests.push({ requestedAt: new Date() });
-    moderate();
+    this.moderate();
+    const isTooMany = this.isTooMany();
+    if (!isTooMany) {
+      this.requests.push({ requestedAt: new Date() });
+    }
     return this.isTooMany();
   }
 
   isTooMany() {
+    if (this.requests.length === 1) {
+      return false;
+    }
     if (this.requests.length >= 10) {
       return true;
     }
 
-    const lastRequest = getLastRequest(this.requests);
+    const lastRequest = this.getLastRequest(this.requests);
+    console.log(lastRequest);
     const diffFromLast = Date.now() - lastRequest?.requestedAt?.getTime();
-
-    if (lastRequest && diffFromLast < 1000) {
+    console.log(diffFromLast);
+    if (!lastRequest) {
+      return false;
+    }
+    if (lastRequest && diffFromLast < 2000) {
       return true;
     }
 
@@ -36,7 +46,10 @@ class RequestModerator {
 
   moderate() {
     const firstRequest = this.getFirstRequest();
-    const diffFromFirst = Date.now - firstRequest?.requestedAt?.getTime();
+    const diffFromFirst = Date.now() - firstRequest?.requestedAt?.getTime();
+    let filtered = [
+      ...this.requests.sort((a, b) => a.requestedAt - b.requestedAt),
+    ];
     if (firstRequest && diffFromFirst > 10000) {
       filtered.shift();
     }
